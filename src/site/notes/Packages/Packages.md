@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/packages/packages/","updated":"2023-12-14T07:08:09.390+09:00"}
+{"dg-publish":true,"permalink":"/packages/packages/","updated":"2023-12-14T08:43:41.669+09:00"}
 ---
 
 The `Packages` folder contains a collection of independent modules.  
@@ -71,3 +71,10 @@ end)
 ```
 
 It's complete!
+
+# Package List
+
+- [[Packages/ValueByPriority\|ValueByPriority]]
+- Maid
+- [[Objects/ExtendedDataTypes#DataTypes\|DataTypes]]
+- etc..
