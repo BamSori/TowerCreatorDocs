@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/objects/class/"}
+{"dg-publish":true,"permalink":"/objects/class/","updated":"2023-12-14T03:56:41.987+09:00"}
 ---
 
 
