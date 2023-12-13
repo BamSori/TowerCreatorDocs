@@ -1,31 +1,28 @@
 ---
-{"dg-publish":true,"permalink":"/packages/packages/","updated":"2023-12-14T04:59:25.773+09:00"}
+{"dg-publish":true,"permalink":"/packages/packages/","updated":"2023-12-14T07:08:09.390+09:00"}
 ---
 
-The `Packages` folder is a collection of independent modules.  
-Each package must have no dependency when called from an external script.
+The `Packages` folder contains a collection of independent modules.  
+Each package should be independent, with no dependencies when called from an external script.
 
+## Using Packages from Other Manufacturers
 
-## Use packages created by other manufacturers
-A good example of a package is Signal modules.  
-Let's use [FastSignal](https://devforum.roblox.com/t/fastsignal-1021-a-consistent-signal-library/1360042) for this section.
-### Install Package
-First, download the package, `FastSignal` from following lists:
-- From [Wally](https://wally.run/package/lucasmzreal/fastsignal?version=10.2.1)
-  Wally is a site with various packages.  
-  Install packages you want and build it with a [ROJO](https://rojo.space/) in the Visual Studio Code.
-- From [Github Repository](https://github.com/RBLXUtils/FastSignal)
-  To download from the repository, you must build with ROJO, just like Wally.
-- From [Github Repository Releases](https://github.com/RBLXUtils/FastSignal/releases)
-  Download models that have already been built as rbxm from the Releases.
-- From [Roblox Marketplace](https://create.roblox.com/marketplace/asset/6532460357/FastSignal-A-consistent-Signal-library%3Fkeyword=&pageNumber=&pagePosition=)
-  It's the easiest to install. 
-  However Many packages may only be on Wally or GitHub.
+A notable example of a package is the Signal module.  
+We will use [FastSignal](https://devforum.roblox.com/t/fastsignal-1021-a-consistent-signal-library/1360042) for illustration in this section.
 
-### Put Package
+### Installing the Package
 
-It doesn't matter where you put the package, but `ReplicatedStorage.Packages` is the most common package folder.
+First, download the `FastSignal` package from the following sources:
 
+- From [Wally](https://wally.run/package/lucasmzreal/fastsignal?version=10.2.1): Wally hosts a variety of packages.  
+    Select and install the desired packages, then build them using [ROJO](https://rojo.space/) in Visual Studio Code.
+- From the [GitHub Repository](https://github.com/RBLXUtils/FastSignal): To download from GitHub, build with ROJO, similar to the process with Wally.
+- From [GitHub Repository Releases](https://github.com/RBLXUtils/FastSignal/releases): Download pre-built models in rbxm format from the Releases section.
+- From the [Roblox Marketplace](https://create.roblox.com/marketplace/asset/6532460357/FastSignal-A-consistent-Signal-library%3Fkeyword=&pageNumber=&pagePosition=): This is the simplest installation method. However, many packages may only be available on Wally or GitHub.
+
+### Placing the Package
+
+You can place the package anywhere, but `ReplicatedStorage.Packages` is the most common location.
 ```
 game
 |- ReplicatedStorage
@@ -33,24 +30,44 @@ game
 | | |- FastSignal
 ```
 
-The name of `FastSignal` is ambiguous. Change the name to `Signal`.  
+Rename `FastSignal` to `Signal` for clarity.
 ```
 game
 |- ReplicatedStorage
 | |- Packages
 | | |- Signal
 ```
-In most cases, the name of the object returned by the module must be identical to the name of the module, but in this case, you should change it to Signal for more general use.
 
-### Use Package
+Typically, the name of the object returned by the module should match the module's name. However, in this case, rename it to `Signal` for broader applicability.
+
+### Using the Package
 
 ![Packages-Use-Package-Explorer.png|300](/img/user/Packages/attachments/Packages-Use-Package-Explorer.png)![Packages-Use-Package-Script-Properties-RunContext-To-Server.png|300](/img/user/Packages/attachments/Packages-Use-Package-Script-Properties-RunContext-To-Server.png)
 
-Let's now use the package that you installed in the external script.  
-  
-Let's first create the script in ReplicatedStorage and [[RunContext\|RunContext]] as the server.  
->[!Tip] RunContext
->If `RunContext` is `Legacy`, it will not run except in `workspace` and `ServerScriptService`.  
->If `RunContext` is `Server`, the script runs anywhere.
+Now, let's use the installed package in an external script.
 
+First, create a script in `ReplicatedStorage` and set the [[Frameworks/File Structure#RunContext\|RunContext]] to server.
 
+> [!Tip] RunContext 
+> If `RunContext` is `Legacy`, the script will only run in `workspace` and `ServerScriptService`.  
+> If `RunContext` is `Server`, the script can run anywhere.
+
+```lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local Packages = ReplicatedStorage.Packages
+local Signal = require(Packages.Signal)
+
+local signal = Signal.new()
+signal:Connect(function(value)
+	print(`Value: {value}`)
+end)
+
+RunService.Heartbeat:Connect(function()
+	local t = os.clock()
+	signal:Fire(t)
+end)
+```
+
+It's complete!
