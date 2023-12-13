@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/frameworks/style-guide/","updated":"2023-12-14T08:47:25.372+09:00"}
+{"dg-publish":true,"permalink":"/frameworks/style-guide/","updated":"2023-12-14T08:48:54.258+09:00"}
 ---
 
 Adhere to the guidelines set out in the [Roblox Lua Style Guide](https://roblox.github.io/lua-style-guide/).
@@ -139,7 +139,7 @@ local ObjectClass = require(ObjectModules.Class)
 -- Example: local PlayerData = require(Player.Data)
 ```
 ##### Constant
-Constants should be in [[Frameworks/Style Guide#LOUD_SNAKE_CASE\|Style Guide#LOUD_SNAKE_CASE]].
+Constants should be in [[Frameworks/Style Guide#LOUD_SNAKE_CASE\|LOUD_SNAKE_CASE]].
 ```lua
 -- Set true to debug raycasting and normals.
 local DEBUG_MODE = true
