@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/frameworks/style-guide/","updated":"2023-12-14T08:34:44.501+09:00"}
+{"dg-publish":true,"permalink":"/frameworks/style-guide/","updated":"2023-12-14T08:47:25.372+09:00"}
 ---
 
 Adhere to the guidelines set out in the [Roblox Lua Style Guide](https://roblox.github.io/lua-style-guide/).
@@ -33,7 +33,7 @@ This is used primarily for constants.
 
 #### Object Names
 
-Use [[Frameworks/Style Guide#camelCase\|#camelCase]] for constructors.
+Use [[Frameworks/Style Guide#camelCase\|Style Guide#camelCase]] for constructors.
 
 Example:
 ```lua
@@ -48,7 +48,7 @@ local valueByPriority = ValueByPriority.byId(
 local dataObject = DataObject.fromInstance(workspace.RootModel)
 ```
 
-For properties, methods, and events, use [[Frameworks/Style Guide#PascalCase\|#PascalCase]]. 
+For properties, methods, and events, use [[Frameworks/Style Guide#PascalCase\|Style Guide#PascalCase]]. 
 Example:
 ```lua
 BasePart.Size = Vector3.new(10, 10, 10)
@@ -139,7 +139,7 @@ local ObjectClass = require(ObjectModules.Class)
 -- Example: local PlayerData = require(Player.Data)
 ```
 ##### Constant
-Constants should be in [[LOUD_SNAKE_CASE\|LOUD_SNAKE_CASE]].
+Constants should be in [[Frameworks/Style Guide#LOUD_SNAKE_CASE\|Style Guide#LOUD_SNAKE_CASE]].
 ```lua
 -- Set true to debug raycasting and normals.
 local DEBUG_MODE = true
