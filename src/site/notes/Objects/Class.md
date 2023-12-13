@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/objects/class/","updated":"2023-12-14T03:56:41.987+09:00"}
+{"dg-publish":true,"permalink":"/objects/class/","updated":"2023-12-14T07:49:40.219+09:00"}
 ---
 
 
@@ -53,4 +53,35 @@ Define a subclass in `Class.Subclasses` module.
 Classes consist of an array of [[Objects/Class#Subclass\|Subclasses]] in the `Class.Classes` module.
 First, Make [[Objects/Class#Subclass\|#Subclass]] to consist our Class.
 
+The class we're going to make is `ConveyorModifier`
 
+Let's define ConveyorModifier in `Classes.Subclass.Modifiers`
+```lua
+local types = require(script.Parent.types)
+
+local Subclasses = {} :: types.SubclassesFormat
+
+--#1 Modifier
+Subclasses.Modifier = {
+	Properties = {
+		Enabled = {
+			Default = true,
+			GetValue = "ValueByPriority",
+		},
+		ModifierPriority = {
+			Default = 1,
+			GetValue = "ValueByPriority",
+		}
+	}
+}
+
+--#4 ConveyorModifier
+Subclasses.ConveyorModifier = {
+	Properties = {
+		ConveyorSpeed = {
+			Default = 30,
+			GetValue = "ValueByPriority",
+		},
+	}
+}
+```
