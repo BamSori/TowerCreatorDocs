@@ -1,22 +1,20 @@
 ---
-{"dg-publish":true,"permalink":"/objects/class/","updated":"2023-12-14T07:49:40.219+09:00"}
+{"dg-publish":true,"permalink":"/Objects/Class/","noteIcon":"","updated":"2023-12-15T06:35:27.587+09:00"}
 ---
 
+Classes in `ObjectModules.Class` are designed for managing both [[Objects/DataObject\|DataObjects]] and [[Objects/ExtendedInstance\|ExtendedInstances]].
 
-Present in `ObjectModules.Class`.
+## Class Structure
 
-`Class` is used for classes of [[Objects/DataObject\|DataObjects]] and [[Objects/ExtendedInstance\|ExtendedInstances]].
+A `Class` comprises an array of `Subclasses` within the `Class.Classes` module. These subclasses collectively define the functionalities and properties of a class.
+## Subclass Definition
 
-Class consist of an array of [[Objects/Class#Subclass\|Subclasses]] in the `Class.Classes` module.
-## Subclass
-
-Another subclass that makes up the class
-Define a subclass in `Class.Subclasses` module.
+Subclasses, which form the integral parts of a class, should be defined in the `Class.Subclasses` module.
 
 >[!Tip] 
->If there are too many subclasses, divide them into sub-categories, define them in the child module, and merge them in the subclasses module.
+>For better organization, especially when dealing with numerous subclasses, group them into sub-categories within child modules. Then, integrate these into the main subclasses module. Here's how you can do it:
 >```lua
->-- in `Class.Subclasses.Phsyics`:
+>-- Example in `Class.Subclasses.Physics`:
 >local Subclasses = {} :: types.SubclassesFormat
 >
 >--#1 Physic
@@ -42,26 +40,28 @@ Define a subclass in `Class.Subclasses` module.
 >-- In `Class.Subclasses`:
 >local Subclasses = {}
 >combineTable( Subclasses, require(script.Physic) )
->-- other sub-categories...
+>-- Repeat for other sub-categories..
 >```
 
 
 ## Tutorials
 
-### Make Class
+### Creating a Class
 
-Classes consist of an array of [[Objects/Class#Subclass\|Subclasses]] in the `Class.Classes` module.
-First, Make [[Objects/Class#Subclass\|#Subclass]] to consist our Class.
+#### Conveyor Modifier
 
-The class we're going to make is `ConveyorModifier`
+##### Subclasses
+To create a class, start by defining its `Subclasses` in the `Class.Classes` module.
+For instance, let's create a `ConveyorModifier` class.
 
-Let's define ConveyorModifier in `Classes.Subclass.Modifiers`
+Define `ConveyorModifier` in `Classes.Subclass.Modifiers`:
 ```lua
 local types = require(script.Parent.types)
 
 local Subclasses = {} :: types.SubclassesFormat
 
 --#1 Modifier
+-- Defining the base Modifier subclass
 Subclasses.Modifier = {
 	Properties = {
 		Enabled = {
@@ -75,13 +75,62 @@ Subclasses.Modifier = {
 	}
 }
 
+-- Other modifiers...
+
 --#4 ConveyorModifier
 Subclasses.ConveyorModifier = {
 	Properties = {
+		-- Properties will be added here...
+	}
+}
+```
+
+###### PropertyInfos
+Next, add essential properties to the `ConveyorModifier`:
+
+- ConveyorSpeed
+- ConveyorDirection
+
+```lua
+Subclasses.ConveyorModifier = {
+	Properties = {
 		ConveyorSpeed = {
-			Default = 30,
-			GetValue = "ValueByPriority",
+			-- Properties of property information to be defined...
+		},
+		ConveyorDirection = {
+			-- Properties of property information to be defined...
 		},
 	}
 }
 ```
+
+>[!Tip]
+>Always include a trailing comma in property tables for easier future additions.
+
+Now, let's set the default values:
+- `ConveyorSpeed`: `30`.
+- `ConveyorDirection`: `"Front"`.
+
+Additionally, specifying the data type is crucial for efficient data packing and display.
+While specifying the data type is optional, if you omit it, the system defaults to `typeof(DefaultValue)` as the data type.
+
+For the `ConveyorSpeed` property, not specifying a `DataType` means it defaults to `number` (specifically float64, or double).
+This default setting is generally adequate, but `ConveyorSpeed` is applied to a `BasePart`'s `LinearAssemblyVelocity`, which uses `Vector3`, each component (x, y, z) of `Vector3` is actually represented as a `float32`.
+
+Therefore, even though `ConveyorSpeed` is set as a `float64`, the actual precision in this context is equivalent to that of a `float32`.
+By explicitly setting `ConveyorSpeed` to `float32` instead of `float64`, you can reduce the amount of data required.
+
+```lua
+ConveyorSpeed = {
+	Default = 30,
+	DataType = "float32",
+},
+ConveyorDirection = {
+	Default = "Front",
+	DataType = "NormalId",
+},
+```
+
+#### BasePart
+
+WIP
