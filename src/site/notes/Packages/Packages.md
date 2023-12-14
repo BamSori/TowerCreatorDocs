@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/packages/packages/","updated":"2023-12-14T08:43:41.669+09:00"}
+{"dg-publish":true,"permalink":"/Packages/Packages/","noteIcon":"","updated":"2023-12-14T08:43:41.669+09:00"}
 ---
 
 The `Packages` folder contains a collection of independent modules.  
