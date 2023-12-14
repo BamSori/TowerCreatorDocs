@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/frameworks/file-structure/","updated":"2023-12-14T07:19:42.302+09:00"}
+{"dg-publish":true,"permalink":"/Frameworks/File Structure/","noteIcon":"","updated":"2023-12-14T07:19:42.302+09:00"}
 ---
 
 ## Managing Scripts in Roblox
