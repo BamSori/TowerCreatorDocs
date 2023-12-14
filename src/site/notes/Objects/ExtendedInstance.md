@@ -1,4 +1,4 @@
 ---
-{"dg-publish":true,"permalink":"/objects/extended-instance/","updated":"2023-12-14T03:56:28.957+09:00"}
+{"dg-publish":true,"permalink":"/Objects/ExtendedInstance/","noteIcon":"","updated":"2023-12-15T05:16:33.284+09:00"}
 ---
 
