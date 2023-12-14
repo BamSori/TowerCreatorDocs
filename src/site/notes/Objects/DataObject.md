@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/objects/data-object/","updated":"2023-12-14T03:56:34.492+09:00"}
+{"dg-publish":true,"permalink":"/Objects/DataObject/","noteIcon":"","updated":"2023-12-15T06:36:41.475+09:00"}
 ---
 
 
@@ -9,4 +9,16 @@
 
 Changing the properties of an [[Objects/ObjectBuilder\|ObjectBuilder]]-linked `DataObject`, changes or regenerates the [[Objects/ExtendedInstance\|ExtendedInstance]] connected to the `DataObject`.
 
-## Make Modifier
+
+# API
+
+## Constructors
+
+### new
+Creates a new `DataObject` and its `Instance`.
+### fromInstance
+
+## Properties
+## Methods
+
+## Events
