@@ -1,9 +1,8 @@
 ---
-{"dg-publish":true,"permalink":"/frameworks/style-guide/","updated":"2023-12-14T08:48:54.258+09:00"}
+{"dg-publish":true,"permalink":"/Frameworks/Style Guide/","noteIcon":"","updated":"2023-12-15T05:18:04.634+09:00"}
 ---
 
 Adhere to the guidelines set out in the [Roblox Lua Style Guide](https://roblox.github.io/lua-style-guide/).
-
 # Getting Started
 
 ## Essential Knowledge
@@ -152,7 +151,7 @@ For tables exposed to external scripts or as properties of objects returned by m
 
 ##### Dictionary
 
-Use the `<Item>By<Key>` format for intuitive naming.
+`<Item>By<Key>` format
 ```lua
 local characters = {} :: {Character}
 local charactersByPlayer = {} :: {[Player]: Character}
@@ -160,3 +159,4 @@ local charactersByPlayer = {} :: {[Player]: Character}
 local monsterInfos = {} :: {MonsterInfo}
 local monsterInfosByMonsterId :: {[MonsterId]: MonsterInfo}
 ```
+
