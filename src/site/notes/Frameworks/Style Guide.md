@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/Frameworks/Style Guide/","noteIcon":"","updated":"2023-12-15T05:18:04.634+09:00"}
+{"dg-publish":true,"permalink":"/Frameworks/Style Guide/","noteIcon":"","updated":"2023-12-16T08:06:50.324+09:00"}
 ---
 
 Adhere to the guidelines set out in the [Roblox Lua Style Guide](https://roblox.github.io/lua-style-guide/).
@@ -82,7 +82,7 @@ Component.__index = Component
 export type Component = typeof(setmetatable(
 	{} :: {
 		Name: string,
-		Destroyed: boolean,
+		IsDestroyed: boolean,
 		Destroying: Signal.Class,
 		_hiddenProperty: any, --you don't have to include private properties.
 	},
@@ -91,7 +91,7 @@ export type Component = typeof(setmetatable(
 function Component.new(): Component
 	local self = setmetatable({}, Component)
 	self.Name = "name"
-	self.Destroyed = false
+	self.IsDestroyed = false
 	self._hiddenProperty = ""
 
 	return self
