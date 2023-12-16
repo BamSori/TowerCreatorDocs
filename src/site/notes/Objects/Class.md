@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/Objects/Class/","noteIcon":"","updated":"2023-12-16T13:05:59.945+09:00"}
+{"dg-publish":true,"permalink":"/Objects/Class/","noteIcon":"","updated":"2023-12-17T06:31:29.483+09:00"}
 ---
 
 Classes in `ObjectModules.Class` are designed for managing both [[Objects/DataObject\|DataObjects]] and [[Objects/ExtendedInstance\|ExtendedInstances]].
@@ -112,7 +112,7 @@ end
 ```
 ## Tutorials
 
-### Define a new class
+### Define Classes
 
 #### Conveyor Modifier
 
@@ -331,7 +331,37 @@ local linearVelocityNode = part:GetPropertyVbp("AssemblyLinearVelocity"):AddNode
 >When the rotation is multiplied by linear Velocity, it ensures that the linear Velocity aligns with the part's rotation. 
 >The `BasePart`'s `AssemblyLinearVelocity` and `AssemblyAngularVelocity` each have a node that multiplies the value with the `CFrame.Rotation` of `BasePart`. 
 >Therefore, it's unnecessary to multiply by Rotation.
-#### BasePart
 
+##### Class
 
-WIP
+You have defined the `ConveyorModifier` subclass.
+Now it's time to define the `ConveyorModifier` class.
+Let's add the next class information table to the `Class.Classes` module.
+
+```lua
+Classes.ConveyorModifier = {
+	RealClass = "Folder",
+	Subclasses = {
+		[1]=Subclasses.Modifier, -- Base Modifier
+		[2]=Subclasses.BasePartModifier, -- Modifiers whose parent should be a BasePart
+		[3]=Subclasses.ConveyorModifier, -- Conveyor Modifier
+	},
+}
+```
+
+Add [[Objects/DataObject\|DataObjects]] and [[Objects/ExtendedInstance\|ExtendedInstances]] with Class `ConveyorModifier`.
+```lua
+local dataObject = DataObject.new("ConveyorModifier")
+dataObject:SetProperty("ConveyorDirection", Enum.NormalId.Top)
+
+local extendedInstance = ExtendedInstance.new("ConveyorModifier")
+extendedInstance:SetProperty("ConveyorSpeed", 150)
+```
+
+#### PVInstances
+
+>[!Warning]
+>It covers more in-depth content than [[Objects/Class#Conveyor Modifier\|How Conveyor Modifier is defined]].
+>Requires an understanding of [[Packages/ValueByPriority\|ValueByPriority]], the `Scale`, and the `TimeScale` Property of the `Model` Class.
+
+## Get Properties
