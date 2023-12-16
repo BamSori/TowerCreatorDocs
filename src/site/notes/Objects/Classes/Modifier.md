@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/Objects/Classes/Modifier/","noteIcon":"","updated":"2023-12-15T05:16:58.228+09:00"}
+{"dg-publish":true,"permalink":"/Objects/Classes/Modifier/","noteIcon":"","updated":"2023-12-16T13:00:55.569+09:00"}
 ---
 
 Inspired from [Modifire](https://docs.blender.org/manual/en/latest/modeling/modifiers/introduction.html) in Blender.
@@ -24,3 +24,7 @@ Tower
 3. PartA spins due to SpinModifier3.
 
 With this, you can also create a one-way slippery truss part that spins and moves.
+
+
+Modifier subclass has a property `Enabled`. 
+When `Enabled` is set to true, the modifier is considered active. Conversely, when `Enabled` is false, the modifier should be non-operational, as if it does not exist.
