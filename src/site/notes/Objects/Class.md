@@ -1,20 +1,28 @@
 ---
-{"dg-publish":true,"permalink":"/Objects/Class/","noteIcon":"","updated":"2023-12-15T06:35:27.587+09:00"}
+{"dg-publish":true,"permalink":"/Objects/Class/","noteIcon":"","updated":"2023-12-16T13:05:59.945+09:00"}
 ---
 
 Classes in `ObjectModules.Class` are designed for managing both [[Objects/DataObject\|DataObjects]] and [[Objects/ExtendedInstance\|ExtendedInstances]].
 
-## Class Structure
+## Structure
 
 A `Class` comprises an array of `Subclasses` within the `Class.Classes` module. These subclasses collectively define the functionalities and properties of a class.
-## Subclass Definition
+## Subclass
 
-Subclasses, which form the integral parts of a class, should be defined in the `Class.Subclasses` module.
+Subclasses, which are integral parts of a class, should be defined in the `Class.Subclasses` module.
 
 >[!Tip] 
->For better organization, especially when dealing with numerous subclasses, group them into sub-categories within child modules. Then, integrate these into the main subclasses module. Here's how you can do it:
+>For better organization, especially when dealing with numerous subclasses, group them into sub-categories within child modules. 
+>Then, integrate these into the main `Subclasses` module. Here's how you can do it:
+>```
+>Class
+>|- Subclasses
+>| |- Physics
+>| |- Parts
+>| |- Modifiers
+>```
 >```lua
->-- Example in `Class.Subclasses.Physics`:
+>-- In `Class.Subclasses.Physics`:
 >local Subclasses = {} :: types.SubclassesFormat
 >
 >--#1 Physic
@@ -43,10 +51,68 @@ Subclasses, which form the integral parts of a class, should be defined in the `
 >-- Repeat for other sub-categories..
 >```
 
+### Handler
 
+Handlers can be added to subclasses. 
+To create a handler, add a module in the `Class.Subclasses` module and name it `"<Subclass Name>Handler"`. 
+Handlers define the broader behavior of an [[Objects/ExtendedInstance\|ExtendedInstance]] with that subclass.
+
+For example, to create a handler for the `ConveyorModifier`, add a module named `"ConveyorModifierHandler"`:
+```
+Class
+|- Classes
+|- Subclasses
+| |- Modifiers
+| | |- ConveyorModifierHandler <-- new Handler!
+| | |- CustomPhysicalPropertiesHandler
+| | |- SpinModifierHandler
+| |- Parts
+| | |- BasePartHandler
+| |- ModelHandler
+```
+
+The handler module returns a table containing functions for each event. 
+Events include:
+#### Added
+Runs when an instance with the subclass tag is added to the DataModel, receiving that instance as an argument.
+Used primarily for the main behavior of the subclass.
+```lua
+local SpinModifierHandler = {}
+
+function SpinModifierHandler.Added(instance: Instance)
+	local self = ExtendedInstance.fromInstance(instance)
+	local partInstance = instance.Parent
+	if partInstance == nil or not partInstance:IsA("BasePart") then
+		return
+	end
+
+	local part = ExtendedInstance.fromInstance( partInstance )
+	spinPart(part, self)
+end
+```
+
+#### Start
+Runs once when the game starts.
+Used mainly for iterations and initial setup for subclasses.
+```lua
+local changedParts, changedCFrames = table.create(2^16), table.create(2^16)
+
+function BasePartHandler.Start()
+	RunService.Stepped:Connect(function()
+		-- BulkMoveTo is faster than setting the CFrame property of individual parts.
+		workspace:BulkMoveTo(
+			changedParts, 
+			changedCFrames, 
+			Enum.BulkMoveMode.FireCFrameChanged
+		)
+	)
+	table.clear(changedParts)
+	table.clear(changedCFrames)
+end
+```
 ## Tutorials
 
-### Creating a Class
+### Define a new class
 
 #### Conveyor Modifier
 
@@ -108,29 +174,164 @@ Subclasses.ConveyorModifier = {
 >Always include a trailing comma in property tables for easier future additions.
 
 Now, let's set the default values:
-- `ConveyorSpeed`: `30`.
-- `ConveyorDirection`: `"Front"`.
+- `ConveyorSpeed`: `30`
+- `ConveyorDirection`: `"Front"`
 
 Additionally, specifying the data type is crucial for efficient data packing and display.
 While specifying the data type is optional, if you omit it, the system defaults to `typeof(DefaultValue)` as the data type.
 
-For the `ConveyorSpeed` property, not specifying a `DataType` means it defaults to `number` (specifically float64, or double).
-This default setting is generally adequate, but `ConveyorSpeed` is applied to a `BasePart`'s `LinearAssemblyVelocity`, which uses `Vector3`, each component (x, y, z) of `Vector3` is actually represented as a `float32`.
+For the `ConveyorSpeed` property, not specifying a `DataType` means it defaults to `number` (equivalent to `float64`, and `double`).
+While this default is generally adequate, `ConveyorSpeed` will affects a `BasePart`'s `LinearAssemblyVelocity`, which is a `Vector3`. 
+Each component of `Vector3` (x, y, z) is a `float32`.
 
-Therefore, even though `ConveyorSpeed` is set as a `float64`, the actual precision in this context is equivalent to that of a `float32`.
-By explicitly setting `ConveyorSpeed` to `float32` instead of `float64`, you can reduce the amount of data required.
+Since `ConveyorSpeed`, whether as a `float64` or a `float32`, is ultimately applied as a `float32`,
+it is more efficient to set the `DataType` to `float32` to utilize a smaller data size.
 
+For `ConveyorDirection`, use the `NormalId` defined in the [[Objects/ExtendedDataTypes#DataTypes\|DataTypes]] module.
 ```lua
 ConveyorSpeed = {
 	Default = 30,
 	DataType = "float32",
 },
 ConveyorDirection = {
-	Default = "Front",
+	Default = Enum.NormalId.Front,
 	DataType = "NormalId",
 },
 ```
 
+###### Handler
+Create a [[Objects/Class#Handler\|Handler]] to define the behavior of conveyor modifiers.
+```
+Class
+|- Classes
+|- Subclasses
+| |- Modifiers
+| | |- ConveyorModifierHandler
+```
+
+```lua
+local ConveyorModifierHandler = {}
+
+function ConveyorModifierHandler.Added(instance:Instance)
+	local self = ExtendedInstance.fromInstance(instance)
+	local partInstance = instance:FindFirstAncestorWhichIsA("BasePart")
+	if not partInstance then
+		return
+	end
+
+	-- Define how it will work..
+end
+
+return ConveyorModifierHandler
+```
+
+First, each Modifier subclass has a property `Enabled`. 
+When `Enabled` is set to true, the modifier is considered active. Conversely, when `Enabled` is false, the modifier should be non-operational, as if it does not exist.
+
+When `Enabled` is true, create the necessary nodes and connections, and assign them to Maid for management. 
+When `Enabled` is false, clean up all resources using `Maid:DoCleaning()`.
+
+For more information, refer to [[Objects/Classes/Modifier\|Modifier]].
+
+```lua
+local self = ExtendedInstance.fromInstance(instance)
+local partInstance = instance:FindFirstAncestorWhichIsA("BasePart")
+if not partInstance then
+	return
+end
+local part = ExtendedInstance.fromInstance( partInstance )
+
+-- Maid is an effective tool for managing object lifecycles and executing functions.
+local maid = Maid.new()
+
+local function enable(enabled)
+	if enabled then
+		maid:Give(
+			-- Tasks for Maid to clean up when Enabled is false..
+		)
+	else
+		-- Clean up when enabled is false
+		maid:DoCleaning()
+	end
+end
+
+enable( self:GetProperty("Enabled") )
+self:GetPropertyVbp("Enabled").Changed:Connect(enable)
+
+self.Destroying:Connect(function()
+	maid:Destroy()
+end)
+```
+
+
+Create [[Packages/ValueByPriority#Node\|ValueByPriority Node]] to set the `AssemblyLinearVelocity` according to the `ConveyorDirection`, influenced by `ConveyorSpeed`.
+
+The priorities of the `ValueByPriorities` created by a `Modifier` should align with the `Priority` of the `Modifier`.
+```lua
+local function enable(enabled)
+	if enabled then
+		local function getLinearVelocity()
+			-- Return LinearVelocity derived from ConveyorSpeed and Direction.
+		end
+		
+		local linearVelocityNode = part:GetPropertyVbp("AssemblyLinearVelocity"):AddNode({
+			Value = getLinearVelocity(),
+			Priority = self:GetProperty("Priority"),
+		})
+		
+		-- Maid will clean up when enabled is false: destroy linearVelocityNode and connections.
+		maid:Give(
+			linearVelocityNode,
+			self:GetPropertyVbp("ConveyorSpeed").Changed:Connect(function()
+				linearVelocityNode:SetValue( getLinearVelocity() )
+			end),
+			self:GetPropertyVbp("ConveyorDirection").Changed:Connect(function()
+				linearVelocityNode:SetValue( getLinearVelocity() )
+			end),
+			self:GetPropertyVbp("Priority").Changed:Connect(function(priority)
+				linearVelocityNode:SetPriority(priority)
+			end)
+		)
+		
+	else
+		maid:DoCleaning()
+	end
+end
+```
+
+To finalize, implement a `getLinearVelocity` function that returns a `Vector3` value based on `ConveyorSpeed` and `ConveyorDirection`.
+```lua
+local function getLinearVelocity()
+	local direction = self:GetProperty("ConveyorDirection")
+	local speed = self:GetProperty("ConveyorSpeed")
+	
+	-- Define velocity vectors for each direction.
+	if direction == Enum.NormalId.Front then
+		return Vector3.new(0, 0, -speed)
+	elseif direction == Enum.NormalId.Back then
+		return Vector3.new(0, 0, speed)
+	elseif direction == Enum.NormalId.Right then
+		return Vector3.new(speed, 0, 0)
+	elseif direction == Enum.NormalId.Left then
+		return Vector3.new(-speed, 0, 0)
+	elseif direction == Enum.NormalId.Top then
+		return Vector3.new(0, speed, 0)
+	elseif direction == Enum.NormalId.Bottom then
+		return Vector3.new(0, -speed, 0)
+	end
+end
+
+local linearVelocityNode = part:GetPropertyVbp("AssemblyLinearVelocity"):AddNode({
+	Value = getLinearVelocity(),
+	Priority = self:GetProperty("Priority"),
+})
+```
+
+>[!Note] Why not multiply `Part.CFrame.Rotation` by `LinearVelocity`? 
+>When the rotation is multiplied by linear Velocity, it ensures that the linear Velocity aligns with the part's rotation. 
+>The `BasePart`'s `AssemblyLinearVelocity` and `AssemblyAngularVelocity` each have a node that multiplies the value with the `CFrame.Rotation` of `BasePart`. 
+>Therefore, it's unnecessary to multiply by Rotation.
 #### BasePart
+
 
 WIP
