@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/Frameworks/Style Guide/","noteIcon":"","updated":"2023-12-16T08:06:50.324+09:00"}
+{"dg-publish":true,"permalink":"/Frameworks/Style Guide/","noteIcon":"","updated":"2023-12-21T06:15:59.949+09:00"}
 ---
 
 Adhere to the guidelines set out in the [Roblox Lua Style Guide](https://roblox.github.io/lua-style-guide/).
@@ -160,3 +160,27 @@ local monsterInfos = {} :: {MonsterInfo}
 local monsterInfosByMonsterId :: {[MonsterId]: MonsterInfo}
 ```
 
+## Functions
+
+Typically, only Lua native functions are named using exclusively lowercase letters.
+```lua
+--native functions:
+table.create
+table.isfrozen --not `isFrozen` or `IsFrozen`
+string.packsize -- not `packSize` or `PackSize`
+buffer.writestring -- not ``writeString` or `WriteString`
+
+--local functions:
+local function create()
+local function isFrozen()
+local function packSize()
+local function writeString()
+
+--module functions:
+function module.Create()
+function module.IsFrozen()
+function module.PackSize()
+function module.WriteString()
+```
+
+In Luau Style, only modules that serve as extensions to native libraries can follow the convention of using exclusively lowercase letters in their naming.
