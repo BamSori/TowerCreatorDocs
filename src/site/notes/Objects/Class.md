@@ -231,7 +231,7 @@ When `Enabled` is set to true, the modifier is considered active. Conversely, wh
 When `Enabled` is true, create the necessary nodes and connections, and assign them to Maid for management. 
 When `Enabled` is false, clean up all resources using `Maid:DoCleaning()`.
 
-For more information, refer to [[Objects/Classes/Modifier\|Modifier]].
+For more information, refer to [[Objects/Classes/Modifier/Modifier\|Modifier]].
 
 ```lua
 local self = ExtendedInstance.fromInstance(instance)
