@@ -1,8 +1,8 @@
 ---
-{"dg-publish":true,"permalink":"/Frameworks/Style Guide/","noteIcon":"","updated":"2023-12-21T06:15:59.949+09:00"}
+{"dg-publish":true,"permalink":"/Frameworks/Style Guide/","noteIcon":"","updated":"2023-12-21T09:28:50.733+09:00"}
 ---
 
-Adhere to the guidelines set out in the [Roblox Lua Style Guide](https://roblox.github.io/lua-style-guide/).
+Adhere to the guidelines set out in the [Roblox Lua Style Guide](https://roblox.github.io/lua-style-guide/) authored by ROBLOX.
 # Getting Started
 
 ## Essential Knowledge
@@ -177,7 +177,7 @@ local function packSize()
 local function writeString()
 
 --module functions:
-function module.Create()
+function module.create() -- Exception: For most constructors of modules, use camelCase
 function module.IsFrozen()
 function module.PackSize()
 function module.WriteString()
