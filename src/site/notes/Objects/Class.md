@@ -1,12 +1,12 @@
 ---
-{"dg-publish":true,"permalink":"/Objects/Class/","noteIcon":"","updated":"2024-01-06T01:08:11.111+09:00"}
+{"dg-publish":true,"permalink":"/Objects/Class/","noteIcon":"","updated":"2024-01-06T01:09:40.438+09:00"}
 ---
 
 Classes in `ObjectModules.Class` are designed for managing both [[Objects/DataObject\|DataObjects]] and [[Objects/ExtendedInstance\|ExtendedInstances]].
 
 >[!Error]
 >I've made quite a few changes to the classes. Please wait for the document to be updated. Sorry for any inconvenience.
->01-16-2024 Bam_Sori
+>01-06-2024 Bam_Sori
 
 ## Structure
 
