@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/Frameworks/Style Guide/","noteIcon":"","updated":"2023-12-21T09:28:50.733+09:00"}
+{"dg-publish":true,"permalink":"/Frameworks/Style Guide/","noteIcon":"","updated":"2023-12-22T14:07:41.805+09:00"}
 ---
 
 Adhere to the guidelines set out in the [Roblox Lua Style Guide](https://roblox.github.io/lua-style-guide/) authored by ROBLOX.
@@ -119,6 +119,28 @@ addComponentToLists(component)
 wait(5)
 component:Destroy()
 ```
+
+>[!Note]- If the type of module returned is error
+>When using `setmetatable()`, the module might occasionally return an `*error-type*`. 
+>In such cases, you can redirect the code to a child module and define the type in the main module. 
+>The structure should be as follows:
+>```
+>SomeObject
+>|- SourceModule
+>```
+>
+>```lua
+>--in Module:
+>local SomeObject = require(script.SourceModule)
+>export type SomeObject = SomeObject.SomeObject
+>
+>return (SomeObject :: any) :: typeof(getmetatable(
+>	({} :: any) :: SomeObject
+>))
+>```
+>
+
+
 
 #### Enums
 Use PascalCase for keys in Enums.
